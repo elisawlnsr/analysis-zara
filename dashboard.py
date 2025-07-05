@@ -25,7 +25,7 @@ def show_logo_in_sidebar(image_path, width=250):
             unsafe_allow_html=True
         )
 
-show_logo_in_sidebar("assets/Zara_Logo.svg")
+show_logo_in_sidebar("Zara_Logo.svg")
 
 
 # Load Data
