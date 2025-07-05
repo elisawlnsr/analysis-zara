@@ -3,21 +3,17 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-
+import os
+import base64
 
 # Konfigurasi tampilan
 st.set_page_config(page_title="Dashboard Penjualan Zara coba", layout="wide")
 
-import base64
 
-# Fungsi encode gambar jadi base64
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-# Fungsi untuk menampilkan logo di sidebar
 def show_logo_in_sidebar(image_path, width=250):
+    if not os.path.exists(image_path):
+        st.sidebar.error(f"Logo file not found: {image_path}")
+        return
     with open(image_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode()
         st.sidebar.markdown(
@@ -29,8 +25,6 @@ def show_logo_in_sidebar(image_path, width=250):
             unsafe_allow_html=True
         )
 
-# Tampilkan logo di sidebar
-show_logo_in_sidebar("Zara_logo.svg")
 
 # Load Data
 df = pd.read_csv("zara_cleaned.csv")
