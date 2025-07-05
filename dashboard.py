@@ -2,10 +2,11 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+from matplotlib.patches import Patch
+
 
 # Konfigurasi tampilan
-st.set_page_config(page_title="Dashboard Penjualan Zara", layout="wide")
+st.set_page_config(page_title="Dashboard Penjualan Zara coba", layout="wide")
 
 import base64
 
@@ -16,19 +17,20 @@ def get_base64_of_bin_file(bin_file):
     return base64.b64encode(data).decode()
 
 # Fungsi untuk menampilkan logo di sidebar
-def show_logo_in_sidebar(image_path, width=200):
-    image_base64 = get_base64_of_bin_file(image_path)
-    st.sidebar.markdown(
-        f"""
-        <div style="text-align: center;">
-            <img src="data:image/png;base64,{image_base64}" width="{width}">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+def show_logo_in_sidebar(image_path, width=250):
+    with open(image_path, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode()
+        st.sidebar.markdown(
+            f"""
+            <div style="text-align: center;">
+                <img src="data:image/svg+xml;base64,{encoded_string}" width="{width}" />
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # Tampilkan logo di sidebar
-show_logo_in_sidebar("Logo_Gunadarma.jpg")
+show_logo_in_sidebar("Zara_logo.svg")
 
 # Load Data
 df = pd.read_csv("zara_cleaned.csv")
@@ -62,25 +64,47 @@ set_gradient_beige()
 
 
 # Navigasi halaman di sidebar
-page = st.sidebar.selectbox("📂 Navigasi Halaman", ["Tentang Zara", "Analisis Data Penjualan"])
+from streamlit_option_menu import option_menu
 
-# Sidebar Header
-st.sidebar.header("🔎 Filter Data")
-# Filter berdasarkan Section
-section_options = ["Semua"] + sorted(df["section"].unique())
-section_choice = st.sidebar.selectbox("Pilih Section", section_options)
+with st.sidebar:
+    st.markdown("<br><br>", unsafe_allow_html=True)  # Jarak ke bawah agar lebih elegan
 
-# Filter berdasarkan Status Promo
-promo_choice = st.sidebar.selectbox("Status Promo", ["Semua", "Yes", "No"])
-
-# Terapkan filter Section
-if section_choice != "Semua":
-    df = df[df["section"] == section_choice]
-
-# Terapkan filter Promo
-if promo_choice != "Semua":
-    df = df[df["Promotion"] == promo_choice]
-
+    page = option_menu(
+        menu_title="Navigasi Halaman",
+        options=["Tentang Zara", "Analisis Data Penjualan"],
+        icons=["info-circle", "bar-chart-line"],
+        default_index=0,
+        menu_icon="folder",
+        styles={
+            "container": {
+                "padding": "24px 8px",
+                "background-color": "#fdf6f0",  # Warna sidebar keseluruhan
+                "border-radius": "12px",
+            },
+            "menu-title":{ 
+                "font-size": "20px"
+            },
+            "icon": {
+                "color": "#c44569",  # Pink hangat
+                "font-size": "18px"
+            },
+            "nav-link": {
+                "font-size": "17px",
+                "color": "#333333",
+                "margin": "6px 0px",
+                "border-radius": "8px",
+                "padding": "10px 15px",
+                "transition": "all 0.3s ease-in-out",
+                "--hover-color": "#fff0f0",  # Saat hover
+            },
+            "nav-link-selected": {
+                "background-color": "#ffe3e3",  # Warna pilihan aktif
+                "font-weight": "600",
+                "color": "#000000",
+                "border-radius": "8px",
+            }
+        }
+    )
 
 # ------------------------------------------------------------------------- PAGE 1: TENTANG ZARA ------------------------------------------------------------------------- 
 if page == "Tentang Zara":
@@ -179,8 +203,23 @@ if page == "Tentang Zara":
 
 # ------------------------------------------------------------------------- PAGE 1: TENTANG ZARA ------------------------------------------------------------------------- 
 elif page == "Analisis Data Penjualan":
-    # Judul halaman
     st.title("Analisis Penjualan Produk Zara US")
+
+    # FILTERS - hanya muncul di halaman Analisis
+    st.sidebar.header("🔎 Filter Data")
+    section_options = ["Semua"] + sorted(df["section"].unique())
+    section_choice = st.sidebar.selectbox("Pilih Section", section_options)
+
+    promo_choice = st.sidebar.selectbox("Status Promo", ["Semua", "Yes", "No"])
+
+    # Terapkan filter Section
+    if section_choice != "Semua":
+        df = df[df["section"] == section_choice]
+
+    # Terapkan filter Promo
+    if promo_choice != "Semua":
+        df = df[df["Promotion"] == promo_choice]
+
 # -------------------------------------------------------------------- Function revenue n sales
     # Fungsi hitung total revenue
     def total_revenue(df):
@@ -225,7 +264,7 @@ elif page == "Analisis Data Penjualan":
     with col1:
         st.markdown("#### 🔝 Produk Terlaris")
         fig_top, ax_top = plt.subplots(figsize=(8, 6))
-        sns.barplot(y=top_produk.index, x=top_produk.values, palette="Blues_r", ax=ax_top)
+        sns.barplot(y=top_produk.index, x=top_produk.values, palette="Set3", ax=ax_top)
         ax_top.set_xlabel("Jumlah Terjual")
         ax_top.set_ylabel("Nama Produk")
         st.pyplot(fig_top)
@@ -234,7 +273,7 @@ elif page == "Analisis Data Penjualan":
     with col2:
         st.markdown("#### 🔻 Produk Paling Sedikit Terjual")
         fig_bottom, ax_bottom = plt.subplots(figsize=(8, 6))
-        sns.barplot(y=bottom_produk.index, x=bottom_produk.values, palette="Reds_r", ax=ax_bottom)
+        sns.barplot(y=bottom_produk.index, x=bottom_produk.values, palette="Set3", ax=ax_bottom)
         ax_bottom.set_xlabel("Jumlah Terjual")
         ax_bottom.set_ylabel("Nama Produk")
         st.pyplot(fig_bottom)
@@ -264,6 +303,101 @@ elif page == "Analisis Data Penjualan":
         unsafe_allow_html=True
     )
 
+    #---------------------------------------------------------------------------- Distribusi Volume Penjualan
+    # Subjudul utama
+    st.subheader('Distribusi Total Penjualan Produk Zara')
+
+    # Buat tab
+    tab1, tab2= st.tabs(["Kategori Produk (terms)", "Gender (section)"])
+
+    # Tab 1: Berdasarkan 'terms'
+    with tab1:
+        # Group by total sales per terms
+        terms_sales = df.groupby("terms")["Sales Volume"].sum().reset_index().sort_values(by="Sales Volume", ascending=False)
+
+        # Streamlit layout
+        st.subheader("📊 Total Penjualan berdasarkan Kategori Produk (terms)")
+
+        # Plotting
+        fig, ax = plt.subplots(figsize=(12, 6))
+        colors = sns.color_palette("Set2", n_colors=len(terms_sales))
+
+        # Horizontal bar chart
+        sns.barplot(
+            data=terms_sales,
+            x="Sales Volume",
+            y="terms",
+            palette=colors,
+            ax=ax
+        )
+
+        # Custom legend
+        legend_labels = [
+            Patch(facecolor=colors[i], label=f'{terms_sales["terms"].iloc[i]}: {terms_sales["Sales Volume"].iloc[i]:,.0f}')
+            for i in range(len(terms_sales))
+        ]
+        ax.legend(handles=legend_labels, title="Sales Volume", loc="lower right", frameon=True)
+
+        # Labels dan title
+        ax.set_title("Total Penjualan berdasarkan Kategori Produk (terms)")
+        ax.set_xlabel("Jumlah Produk Terjual")
+        ax.set_ylabel("Kategori Produk (terms)")
+
+        st.pyplot(fig)
+
+        st.markdown(
+            """
+            <div style="background-color:#fff3cd; padding:10px; border-left:6px solid #ffa500; border-radius:5px;">
+            📌 <b>Insight:</b> Kategori teratas yang memiliki volume penjualan tertinggi bisa menjadi indikasi bahwa produk tersebut sangat diminati oleh pelanggan. 
+            Hal ini bisa menjadi fokus utama untuk strategi promosi atau pengembangan produk baru.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    # Tab 2: Berdasarkan 'section' (Gender)
+    with tab2:
+        # Group berdasarkan section (Gender)
+        section_sales = df.groupby("section")["Sales Volume"].sum().reset_index().sort_values(by="Sales Volume", ascending=False)
+
+        st.markdown("### 🧍‍♀️🧍 Total Penjualan berdasarkan Gender (Section)")
+
+        # Plot
+        fig2, ax2 = plt.subplots(figsize=(12, 6))
+        colors = sns.color_palette("Set2", n_colors=len(section_sales))
+
+        sns.barplot(
+            data=section_sales,
+            x="Sales Volume",
+            y="section",
+            palette=colors,
+            ax=ax2
+        )
+
+        # Tambahkan legenda manual
+        legend_labels = [
+            Patch(facecolor=colors[i], label=f'{section_sales["section"].iloc[i]}: {section_sales["Sales Volume"].iloc[i]:,.0f}')
+            for i in range(len(section_sales))
+        ]
+        ax2.legend(handles=legend_labels, title="Sales Volume", loc="lower right", frameon=True)
+
+        # Label sumbu dan judul
+        ax2.set_xlabel("Jumlah Produk Terjual")
+        ax2.set_ylabel("Section (Gender)")
+        ax2.set_title("Total Penjualan berdasarkan Gender (Section)")
+
+        st.pyplot(fig2)
+
+        st.markdown(
+            """
+            <div style="background-color:#fff3cd; padding:10px; border-left:6px solid #ffa500; border-radius:5px;">
+            📌 <b>Insight:</b> Berdasarkan grafik total penjualan berdasarkan gender (section), terlihat bahwa produk untuk pria (MAN) memiliki jumlah penjualan yang jauh lebih tinggi dibandingkan produk untuk wanita (WOMAN). 
+            Penjualan produk pria mencapai sekitar 394.361 unit, sedangkan produk wanita hanya sekitar 63.374 unit. Oleh karena itu, perlu dilakukan evaluasi dan pengembangan strategi penjualan khusus untuk produk wanita, 
+            agar dapat meningkatkan daya tarik dan mendorong peningkatan angka penjualan pada kategori tersebut.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     # -------------------------------------------------------------------- function harga vs penjualan
     # # Grafik 3: Harga vs Penjualan
     # st.subheader("Harga vs Penjualan")
@@ -290,7 +424,15 @@ elif page == "Analisis Data Penjualan":
         ax1.set_xlabel("Terms")
         ax1.tick_params(axis='x', rotation=45)
         st.pyplot(fig1)
-
+    
+    st.markdown(
+            """
+            <div style="background-color:#fff3cd; padding:10px; border-left:6px solid #ffa500; border-radius:5px;">
+            📌 <b>Insight:</b> Konsumen pria cenderung lebih banyak membeli produk yang lebih bervariasi, sementara konsumen wanita cenderung hanya membeli satu varian produk saja 
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     # ---------- Tab 2: Produk Wanita
     with tab2:
         women_terms = df[df['section'] == 'WOMAN']['terms'].value_counts().reset_index()
