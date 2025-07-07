@@ -33,7 +33,7 @@ df = pd.read_csv("zara_cleaned.csv")
 
 
 # -------------------------------#
-#        Sidebar & Filter       #
+#           Sidebar              #
 # -------------------------------#
 
 # Fungsi untuk mengatur latar belakang gradien sidebar
@@ -200,23 +200,49 @@ if page == "Tentang Zara":
 # ------------------------------------------------------------------------- PAGE 1: TENTANG ZARA ------------------------------------------------------------------------- 
 elif page == "Analisis Data Penjualan":
     st.title("Analisis Penjualan Produk Zara US")
+#-------------------------------------------------------------- FILTER
+    # --- Sidebar Filter Data ---
+    with st.sidebar:
+        st.markdown("### 🔎 Filter Data")
 
-    # FILTERS - hanya muncul di halaman Analisis
-    st.sidebar.header("🔎 Filter Data")
-    section_options = ["Semua"] + sorted(df["section"].unique())
-    section_choice = st.sidebar.selectbox("Pilih Section", section_options)
+        # Dropdown Section
+        section_options = ["Semua"] + sorted(df["section"].dropna().unique())
+        section_choice = st.selectbox("Pilih Section", section_options)
 
-    promo_choice = st.sidebar.selectbox("Status Promo", ["Semua", "Yes", "No"])
+        # Dropdown Status Promo
+        promo_choice = st.selectbox("Status Promo", ["Semua", "Yes", "No"])
 
-    # Terapkan filter Section
+    # --- Terapkan Filter ---
+    filtered_df = df.copy()
+
     if section_choice != "Semua":
-        df = df[df["section"] == section_choice]
+        filtered_df = filtered_df[filtered_df["section"] == section_choice]
 
-    # Terapkan filter Promo
     if promo_choice != "Semua":
-        df = df[df["Promotion"] == promo_choice]
+        filtered_df = filtered_df[filtered_df["Promotion"] == promo_choice]
 
-# -------------------------------------------------------------------- Function revenue n sales
+    # --- Tampilkan Data Setelah Filter ---
+    st.markdown("## Hasil Filter Data")
+    st.dataframe(filtered_df, use_container_width=True)
+
+    # --- Styling tambahan untuk membuat tampilannya rapi ---
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            background-color: #f9f9f9;
+            padding: 25px 20px;
+            border-radius: 8px;
+        }
+        .stSelectbox label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .stSelectbox > div {
+            padding: 4px 0;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    # -------------------------------------------------------------------- Function revenue n sales
     # Fungsi hitung total revenue
     def total_revenue(df):
         return (df['price'] * df['Sales Volume']).sum()
@@ -284,7 +310,7 @@ elif page == "Analisis Data Penjualan":
     # -------------------------------------------------------------------- Function distribusi harga
     # Grafik 2: Distribusi Harga
     st.subheader("Distribusi Harga Produk")
-    fig2, ax2 = plt.subplots(figsize=(16, 8))
+    fig2, ax2 = plt.subplots(figsize=(10,5))
     sns.histplot(df["price"], bins=30, kde=True, color="orange", ax=ax2)
     ax2.set_xlabel("Harga (USD)")
     st.pyplot(fig2)
@@ -304,7 +330,7 @@ elif page == "Analisis Data Penjualan":
     st.subheader('Distribusi Total Penjualan Produk Zara')
 
     # Buat tab
-    tab1, tab2= st.tabs(["Kategori Produk (terms)", "Gender (section)"])
+    tab1, tab2= st.tabs(["Kategori Produk (terms)", "Kategori Konsumen (section)"])
 
     # Tab 1: Berdasarkan 'terms'
     with tab1:
@@ -351,12 +377,12 @@ elif page == "Analisis Data Penjualan":
             unsafe_allow_html=True
         )
 
-    # Tab 2: Berdasarkan 'section' (Gender)
+    # Tab 2: Berdasarkan 'section' (Kategori Konsumen)
     with tab2:
-        # Group berdasarkan section (Gender)
+        # Group berdasarkan section (Kategori Konsumen)
         section_sales = df.groupby("section")["Sales Volume"].sum().reset_index().sort_values(by="Sales Volume", ascending=False)
 
-        st.markdown("### 🧍‍♀️🧍 Total Penjualan berdasarkan Gender (Section)")
+        st.markdown("### 🧍‍♀️🧍 Total Penjualan berdasarkan Kategori Konsumen(Section)")
 
         # Plot
         fig2, ax2 = plt.subplots(figsize=(12, 6))
@@ -379,8 +405,8 @@ elif page == "Analisis Data Penjualan":
 
         # Label sumbu dan judul
         ax2.set_xlabel("Jumlah Produk Terjual")
-        ax2.set_ylabel("Section (Gender)")
-        ax2.set_title("Total Penjualan berdasarkan Gender (Section)")
+        ax2.set_ylabel("Kategori Konsumen")
+        ax2.set_title("Total Penjualan berdasarkan Kategori Konsumen (Section)")
 
         st.pyplot(fig2)
 
@@ -545,7 +571,7 @@ elif page == "Analisis Data Penjualan":
         st.subheader("Efektivitas Promosi per Section")
 
         heat_data = df.pivot_table(index="section", columns="Promotion", values="Sales Volume", aggfunc="mean")
-        fig5, ax5 = plt.subplots(figsize=(16, 8))
+        fig5, ax5 = plt.subplots(figsize=(10, 5))
         sns.heatmap(heat_data, annot=True, fmt=".1f", cmap="PuBu", ax=ax5)
         ax5.set_title("Rata-rata Penjualan Produk Promosi per Section")
         st.pyplot(fig5)
