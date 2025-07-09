@@ -221,10 +221,6 @@ elif page == "Analisis Data Penjualan":
     if promo_choice != "Semua":
         filtered_df = filtered_df[filtered_df["Promotion"] == promo_choice]
 
-    # --- Tampilkan Data Setelah Filter ---
-    st.markdown("## Hasil Filter Data")
-    st.dataframe(filtered_df, use_container_width=True)
-
     # --- Styling tambahan untuk membuat tampilannya rapi ---
     st.markdown("""
         <style>
@@ -405,7 +401,7 @@ elif page == "Analisis Data Penjualan":
 
         # Label sumbu dan judul
         ax2.set_xlabel("Jumlah Produk Terjual")
-        ax2.set_ylabel("Kategori Konsumen")
+        ax2.set_ylabel("Kategori Konsumen (Gender)")
         ax2.set_title("Total Penjualan berdasarkan Kategori Konsumen (Section)")
 
         st.pyplot(fig2)
@@ -431,7 +427,7 @@ elif page == "Analisis Data Penjualan":
 
     # -------------------------------------------------------------------- function penjualan berdasarkan section
     # Buat 2 tab: Pria & Wanita
-    st.subheader('Penjualan Berdasarkan Section')
+    st.subheader('Distribusi Kategori Produk(terms) Berdasarkan Kategori Konsumen(section)')
     tab1, tab2 = st.tabs(["Men", "Women"])
 
     # ---------- Tab 1: Produk Pria
