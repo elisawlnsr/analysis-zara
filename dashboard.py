@@ -201,25 +201,21 @@ if page == "Tentang Zara":
 elif page == "Analisis Data Penjualan":
     st.title("Analisis Penjualan Produk Zara US")
 #-------------------------------------------------------------- FILTER
-    # --- Sidebar Filter Data ---
-    with st.sidebar:
-        st.markdown("### 🔎 Filter Data")
+    # FILTERS - hanya muncul di halaman Analisis
+    st.sidebar.header("🔎 Filter Data")
+    section_options = ["Semua"] + sorted(df["section"].unique())
+    section_choice = st.sidebar.selectbox("Pilih Section", section_options)
 
-        # Dropdown Section
-        section_options = ["Semua"] + sorted(df["section"].dropna().unique())
-        section_choice = st.selectbox("Pilih Section", section_options)
+    promo_choice = st.sidebar.selectbox("Status Promo", ["Semua", "Yes", "No"])
 
-        # Dropdown Status Promo
-        promo_choice = st.selectbox("Status Promo", ["Semua", "Yes", "No"])
-
-    # --- Terapkan Filter ---
-    filtered_df = df.copy()
-
+    # Terapkan filter Section
     if section_choice != "Semua":
-        filtered_df = filtered_df[filtered_df["section"] == section_choice]
+        df = df[df["section"] == section_choice]
 
+    # Terapkan filter Promo
     if promo_choice != "Semua":
-        filtered_df = filtered_df[filtered_df["Promotion"] == promo_choice]
+        df = df[df["Promotion"] == promo_choice]
+
 
     # --- Styling tambahan untuk membuat tampilannya rapi ---
     st.markdown("""
