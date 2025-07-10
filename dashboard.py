@@ -66,7 +66,7 @@ with st.sidebar:
     st.markdown("<br><br>", unsafe_allow_html=True)  # Jarak ke bawah agar lebih elegan
 
     page = option_menu(
-        menu_title="Navigasi Halaman",
+        menu_title="Menu Halaman",
         options=["Tentang Zara", "Analisis Data Penjualan"],
         icons=["info-circle", "bar-chart-line"],
         default_index=0,
@@ -412,14 +412,6 @@ elif page == "Analisis Data Penjualan":
             """,
             unsafe_allow_html=True
         )
-    # -------------------------------------------------------------------- function harga vs penjualan
-    # # Grafik 3: Harga vs Penjualan
-    # st.subheader("Harga vs Penjualan")
-    # fig3, ax3 = plt.subplots(figsize=(16, 8))
-    # sns.scatterplot(data=df, x="price", y="Sales Volume", hue="section", ax=ax3)
-    # ax3.set_xlabel("Harga")
-    # ax3.set_ylabel("Jumlah Terjual")
-    # st.pyplot(fig3)
 
     # -------------------------------------------------------------------- function penjualan berdasarkan section
     # Buat 2 tab: Pria & Wanita
