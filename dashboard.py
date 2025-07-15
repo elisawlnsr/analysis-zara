@@ -7,7 +7,7 @@ import os
 import base64
 
 # Konfigurasi tampilan
-st.set_page_config(page_title="Dashboard Penjualan Zara coba", layout="wide")
+st.set_page_config(page_title="Dashboard Penjualan Zara", layout="wide")
 
 
 def show_logo_in_sidebar(image_path, width=250):
@@ -139,7 +139,7 @@ if page == "Tentang Zara":
     st.markdown(
         """
         <div style="text-align: justify;">
-        Data yang digunakan untuk membuat analisis penjualan Zara US diambil dari platform open source 
+        Data yang digunakan untuk membuat analisis penjualan Zara ini diambil dari platform open source 
         <a href="https://www.kaggle.com/datasets/xontoloyo/data-penjualan-zara" target="_blank">Kaggle</a> 
         dan dipublikasikan oleh pengguna bernama <i>samnambewan</i>. Dataset ini terdiri dari 251 baris dan 16 kolom, dengan 13 kolom bertipe data object, 2 kolom bertipe int64, dan 1 kolom bertipe float64. 
         Setiap kolom dalam dataset ini memiliki arti dan peran masing-masing dalam analisis.
@@ -197,9 +197,9 @@ if page == "Tentang Zara":
 
 
 
-# ------------------------------------------------------------------------- PAGE 1: TENTANG ZARA ------------------------------------------------------------------------- 
+# ------------------------------------------------------------------------- PAGE 2: ANALISIS DATA PENJUALAN ------------------------------------------------------------------------- 
 elif page == "Analisis Data Penjualan":
-    st.title("Analisis Penjualan Produk Zara US")
+    st.title("Analisis Penjualan Produk Zara")
 #-------------------------------------------------------------- FILTER
     # FILTERS - hanya muncul di halaman Analisis
     st.sidebar.header("🔎 Filter Data")
@@ -526,7 +526,7 @@ elif page == "Analisis Data Penjualan":
     st.subheader("Pengaruh Efektivitas Promosi")
     tab1, tab2= st.tabs(["Posisi", "Section"])
 
-    # ---------- Tab 3: hubungan strategi promosi dan posisi
+    # ---------- Tab 1: hubungan strategi promosi dan posisi
     with tab1:
         st.subheader("Efektivitas Promosi di Tiap Posisi Produk")
 
@@ -550,7 +550,7 @@ elif page == "Analisis Data Penjualan":
             unsafe_allow_html=True
         )
 
-    # ---------- Tab 4: hubungan strategi promosi dan section
+    # ---------- Tab 2: hubungan strategi promosi dan section
     with tab2:
         st.subheader("Efektivitas Promosi per Section")
 
@@ -570,8 +570,6 @@ elif page == "Analisis Data Penjualan":
             """,
             unsafe_allow_html=True
         )
-
-
 
     st.markdown("---")
     st.caption("Dibuat dengan menggunakan Streamlit oleh [Elisa Wulansari]")
