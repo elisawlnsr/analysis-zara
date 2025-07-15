@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 import os
 import base64
+from streamlit_option_menu import option_menu
 
 # Konfigurasi tampilan
 st.set_page_config(page_title="Dashboard Penjualan Zara", layout="wide")
@@ -60,8 +61,6 @@ set_gradient_beige()
 
 
 # Navigasi halaman di sidebar
-from streamlit_option_menu import option_menu
-
 with st.sidebar:
     st.markdown("<br><br>", unsafe_allow_html=True)  # Jarak ke bawah agar lebih elegan
 
