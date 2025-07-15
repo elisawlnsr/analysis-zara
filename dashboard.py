@@ -332,7 +332,7 @@ elif page == "Analisis Data Penjualan":
         st.subheader("📊 Total Penjualan berdasarkan Kategori Produk (terms)")
 
         # Plotting
-        fig, ax = plt.subplots(figsize=(12, 6))
+        fig, ax = plt.subplots(figsize=(10, 5))
         colors = sns.color_palette("Set2", n_colors=len(terms_sales))
 
         # Horizontal bar chart
@@ -376,7 +376,7 @@ elif page == "Analisis Data Penjualan":
         st.markdown("### 🧍‍♀️🧍 Total Penjualan berdasarkan Kategori Konsumen(Section)")
 
         # Plot
-        fig2, ax2 = plt.subplots(figsize=(12, 6))
+        fig2, ax2 = plt.subplots(figsize=(10, 5))
         colors = sns.color_palette("Set2", n_colors=len(section_sales))
 
         sns.barplot(
@@ -499,7 +499,7 @@ elif page == "Analisis Data Penjualan":
     # ---------- Tab 2: strategi posisi
     with tab2:
         position_sales = df.groupby("Product Position")["Sales Volume"].mean().sort_values(ascending=False).reset_index()
-        fig6, ax6 = plt.subplots(figsize=(12, 6))
+        fig6, ax6 = plt.subplots(figsize=(10, 5))
         sns.barplot(data=position_sales, x="Product Position", y="Sales Volume", palette="Spectral", ax=ax6)
         # Tambahkan label nilai rata-rata
         for i, row in position_sales.iterrows():
@@ -531,7 +531,7 @@ elif page == "Analisis Data Penjualan":
 
         promo_pos = df.groupby(["Product Position", "Promotion"])["Sales Volume"].mean().reset_index()
 
-        fig8, ax8 = plt.subplots(figsize=(12, 6))
+        fig8, ax8 = plt.subplots(figsize=(10, 5))
         sns.barplot(data=promo_pos, x="Product Position", y="Sales Volume", hue="Promotion", ax=ax8, palette="pastel")
         ax8.set_title("Rata-rata Penjualan Produk Promosi vs Non-promosi di Tiap Posisi")
         ax8.set_ylabel("Rata-rata Terjual")
