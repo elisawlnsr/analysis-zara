@@ -554,7 +554,7 @@ elif page == "Analisis Data Penjualan":
         st.subheader("Efektivitas Promosi per Section")
 
         heat_data = df.pivot_table(index="section", columns="Promotion", values="Sales Volume", aggfunc="mean")
-        fig5, ax5 = plt.subplots(figsize=(10, 5))
+        fig5, ax5 = plt.subplots(figsize=(8, 4))
         sns.heatmap(heat_data, annot=True, fmt=".1f", cmap="PuBu", ax=ax5)
         ax5.set_title("Rata-rata Penjualan Produk Promosi per Section")
         st.pyplot(fig5)
