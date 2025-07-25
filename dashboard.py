@@ -11,7 +11,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title="Dashboard Penjualan Zara", layout="wide")
 
 
-def show_logo_in_sidebar(image_path, width=250):
+def show_logo_in_sidebar(image_path, width=300):
     if not os.path.exists(image_path):
         st.sidebar.error(f"Logo file not found: {image_path}")
         return
@@ -19,7 +19,7 @@ def show_logo_in_sidebar(image_path, width=250):
         encoded_string = base64.b64encode(image_file.read()).decode()
         st.sidebar.markdown(
             f"""
-            <div style="text-align: center;">
+            <div style="text-align: center; margin-top: 40px;"> 
                 <img src="data:image/svg+xml;base64,{encoded_string}" width="{width}" />
             </div>
             """,
@@ -62,7 +62,7 @@ set_backgorund()
 
 # Navigasi halaman di sidebar
 with st.sidebar:
-    st.markdown("<br><br>", unsafe_allow_html=True)  # Jarak ke bawah agar lebih elegan
+    st.markdown("<br><br>", unsafe_allow_html=True)  # Jarak ke bawah
 
     page = option_menu(
         menu_title="Menu Halaman",
@@ -73,7 +73,7 @@ with st.sidebar:
         styles={
             "container": {
                 "padding": "24px 8px",
-                "background-color": "#faece6",  # Warna sidebar keseluruhan
+                "background-color": "#faece6",  # Warna sidebar 
                 "border-radius": "12px",
             },
             "menu-title":{ 
@@ -106,7 +106,7 @@ with st.sidebar:
 # ------------------------------------------------------------------------- PAGE 1: TENTANG ZARA ------------------------------------------------------------------------- 
 if page == "Tentang Zara":
 # Judul halaman
-    st.title("Tentang Zara")
+    st.title("TENTANG ZARA")
     
     left_co, cent_co,last_co = st.columns(3)
     with cent_co:
@@ -200,7 +200,7 @@ if page == "Tentang Zara":
 
 # ------------------------------------------------------------------------- PAGE 2: ANALISIS DATA PENJUALAN ------------------------------------------------------------------------- 
 elif page == "Analisis Data Penjualan":
-    st.title("Analisis Penjualan Produk Zara")
+    st.title("ANALISIS PENJUALAN PRODUK ZARA")
 #-------------------------------------------------------------- FILTER
     # FILTERS - hanya muncul di halaman Analisis
     st.sidebar.header("🔎 Filter Data")
@@ -209,16 +209,16 @@ elif page == "Analisis Data Penjualan":
 
     promo_choice = st.sidebar.selectbox("Status Promo", ["Semua", "Yes", "No"])
 
-    # Terapkan filter Section
+    #filter Section
     if section_choice != "Semua":
         df = df[df["section"] == section_choice]
 
-    # Terapkan filter Promo
+    # filter Promo
     if promo_choice != "Semua":
         df = df[df["Promotion"] == promo_choice]
 
 
-    # --- Styling tambahan untuk membuat tampilannya rapi ---
+    # --- Styling untuk membuat tampilannya  ---
     st.markdown("""
     <style>
     /* Container filter section */
