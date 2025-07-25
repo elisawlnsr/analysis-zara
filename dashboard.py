@@ -42,9 +42,9 @@ def set_gradient_beige():
     st.markdown(
         """
         <style>
-        /* Background sidebar gradien beige ke putih */
+        /* Sidebar background solid color */
         section[data-testid="stSidebar"] {
-            background: linear-gradient(to bottom, #f5eae0, #ffffff);
+            background-color: #fef7f1;
         }
 
         /* Warna teks sidebar */
@@ -73,31 +73,33 @@ with st.sidebar:
         styles={
             "container": {
                 "padding": "24px 8px",
-                "background-color": "#fdf6f0",  # Warna sidebar keseluruhan
+                "background-color": "#faece6",  # Warna sidebar keseluruhan
                 "border-radius": "12px",
             },
             "menu-title":{ 
-                "font-size": "20px"
+                "font-size": "20px",
+                "color": "#5c3c3c"
             },
             "icon": {
-                "color": "#c44569",  # Pink hangat
+                "color": "#c44569",
                 "font-size": "18px"
             },
             "nav-link": {
                 "font-size": "17px",
-                "color": "#333333",
+                "color": "#444444",
                 "margin": "6px 0px",
                 "border-radius": "8px",
                 "padding": "10px 15px",
                 "transition": "all 0.3s ease-in-out",
-                "--hover-color": "#fff0f0",  # Saat hover
+                "--hover-color": "#fdeee9"
             },
             "nav-link-selected": {
-                "background-color": "#ffe3e3",  # Warna pilihan aktif
+                "background-color": "#fddede",
                 "font-weight": "600",
                 "color": "#000000",
                 "border-radius": "8px",
             }
+
         }
     )
 
@@ -218,21 +220,44 @@ elif page == "Analisis Data Penjualan":
 
     # --- Styling tambahan untuk membuat tampilannya rapi ---
     st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            background-color: #f9f9f9;
-            padding: 25px 20px;
-            border-radius: 8px;
-        }
-        .stSelectbox label {
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .stSelectbox > div {
-            padding: 4px 0;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    <style>
+    /* Container filter section */
+    .filter-box {
+        background-color: #fdf1ec;  /* Blush-pink lembut */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 20px;
+    }
+
+    /* Judul dan label */
+    .filter-box h3, .filter-box label {
+        color: #3d2b2b;
+        font-weight: 600;
+    }
+
+    /* Custom selectbox */
+    .stSelectbox > div {
+        background-color: #fff9f7;
+        border: 1px solid #eac9c1;
+        border-radius: 8px;
+        padding: 8px 10px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.02);
+    }
+
+    .stSelectbox label {
+        font-size: 14px;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    /* Jarak antar elemen */
+    .stSelectbox {
+        margin-bottom: 16px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
     # -------------------------------------------------------------------- Function revenue n sales
     # Fungsi hitung total revenue
     def total_revenue(df):
