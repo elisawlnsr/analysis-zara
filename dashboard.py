@@ -38,7 +38,7 @@ df = pd.read_csv("zara_cleaned.csv")
 # -------------------------------#
 
 # Fungsi untuk mengatur latar belakang gradien sidebar
-def set_gradient_beige():
+def set_backgorund():
     st.markdown(
         """
         <style>
@@ -57,7 +57,7 @@ def set_gradient_beige():
     )
 
 # Panggil fungsi styling sidebar
-set_gradient_beige()
+set_backgorund()
 
 
 # Navigasi halaman di sidebar
