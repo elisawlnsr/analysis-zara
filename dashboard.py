@@ -140,15 +140,16 @@ if page == "Tentang Zara":
     st.markdown(
         """
         <div style="text-align: justify;">
-        Data yang digunakan untuk membuat analisis penjualan Zara ini diambil dari platform open source 
-        <a href="https://www.kaggle.com/datasets/xontoloyo/data-penjualan-zara" target="_blank">Kaggle</a> 
-        dan dipublikasikan oleh pengguna bernama <i>samnambewan</i>. Dataset ini terdiri dari 251 baris dan 16 kolom, dengan 13 kolom bertipe data object, 2 kolom bertipe int64, dan 1 kolom bertipe float64. 
-        Setiap kolom dalam dataset ini memiliki arti dan peran masing-masing dalam analisis.
+            Data yang digunakan dalam analisis penjualan Zara ini berasal dari platform open source Kaggle dan dipublikasikan oleh pengguna bernama <i>samnambewan</i>. Dataset ini merupakan hasil scraping data pada tanggal 19 Februari 2024. 
+            Dataset terdiri dari 251 baris dan 16 kolom, dengan 13 kolom bertipe data object, 2 kolom bertipe int64, dan 1 kolom bertipe float64. 
+            Setiap kolom memiliki peran yang berbeda dalam proses analisis. 
+            Link dataset: <a href="https://www.kaggle.com/datasets/xontoloyo/data-penjualan-zara" target="_blank">https://www.kaggle.com/datasets/xontoloyo/data-penjualan-zara</a>
         </div>
         """,
         unsafe_allow_html=True
     )
-    
+
+
     st.write("")
     st.markdown("""
         <style>
@@ -271,6 +272,8 @@ elif page == "Analisis Data Penjualan":
     total_sales_value = total_sales(df)
     total_revenue_value = total_revenue(df)
 
+    st.markdown("Analisis ini menggunakan dataset dari Kaggle yang merupakan hasil scraping data pada tanggal 19 Februari 2024.")
+    
     # Tampilkan metrik di layout 2 kolom
     st.markdown("## 📊 Ringkasan Data")
     col1, col2 = st.columns(2)
